@@ -1,24 +1,20 @@
-# osm-data-inspector
+# ICEYE OSM Visualiser
 
-## Project setup
-```
-npm install
-```
+This is a basic spatial viewer for Open Street Map (OSM) data.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## Features
 
-### Compiles and minifies for production
-```
-npm run build
-```
+* Interactive map
+* Spatial Data
+  * OSM Overpass data streaming
+  * [TODO] Vector data
+* Draw tools
+  * Query via drawn shape
+* Charting of queried data
 
-### Lints and fixes files
-```
-npm run lint
-```
+## Software Stack
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+* [Leaflet.js](https://leafletjs.com/)
+  * [Leaflet-Geoman](https://github.com/geoman-io/leaflet-geoman)
+* [Vue.js](https://github.com/vue-leaflet/Vue2Leaflet)
+* [Vue-ApexCharts](https://github.com/apexcharts/vue-apexcharts)
