@@ -30,12 +30,18 @@ export default {
     // add leaflet-geoman controls with some options to the map
     const map = this.$refs.LeafletMap.mapObject;
     map.pm.addControls({
-      position: "topright",
+      position: "topleft",
       drawPolyline: false,
       drawCircleMarker: false,
       drawMarker: false,
-      cutPolygon: false
+      cutPolygon: false,
+      oneBlock: true
     });
+
+    map.on('pm:drawend', e => {  
+      console.log(e);  
+    });  
+
   }
 };
 </script>
