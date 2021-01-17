@@ -22,10 +22,11 @@ export default {
   data() {
     return {
       url:
-        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
+        "https://cdn.lima-labs.com/{z}/{x}/{y}.png?free",
       zoom: 15,
       center: [35.67319515681665, 139.74308967590332],
-      bounds: null
+      bounds: null,
+      buildingLayer: undefined
     };
   },
   computed: {
@@ -52,10 +53,16 @@ export default {
   methods: {
     getGeometry() {
       const geoJson = this.map.pm.getGeomanDrawLayers(true).toGeoJSON();
+      // Remove existing geometry and previous drawn geometry
+      //if(this.buildingLayer) this.map.removeLayer(this.buildingLayer);
+      this.map.eachLayer(function(layer){
+        if(!layer._url) layer.remove();
+      });
       this.spatialQueryOSM(geoJson);
     },
     addGeoJSONtoMap(error, layer) {
-      L.geoJson(layer).addTo(this.map);
+      this.buildingLayer = L.geoJson(layer, { pmIgnore: true});
+      this.buildingLayer.addTo(this.map);
     },
     spatialQueryOSM(geoJson) {
       let latlon = "";
