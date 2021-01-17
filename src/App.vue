@@ -1,15 +1,19 @@
 <template>
   <div id="app">
     <Map />
+    <!-- <Interface /> -->
   </div>
 </template>
 
 <script>
 import Map from "./components/Map";
+// import Interface from "./components/Interface"
+
 export default {
   name: "App",
   components: {
     Map
+    // Interface
   }
 };
 </script>

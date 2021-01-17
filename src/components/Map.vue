@@ -7,9 +7,11 @@
 </template>
 
 <script>
+import L from "leaflet";
 import { LMap, LTileLayer } from "vue2-leaflet";
 import "@geoman-io/leaflet-geoman-free";
 import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
+import query from "../controllers/queryController";
 
 export default {
   name: "Map",
@@ -26,22 +28,51 @@ export default {
       bounds: null
     };
   },
+  computed: {
+    map() {
+      return this.$refs.LeafletMap.mapObject;
+    }
+  },
   mounted() {
     // add leaflet-geoman controls with some options to the map
-    const map = this.$refs.LeafletMap.mapObject;
-    map.pm.addControls({
+    this.map.pm.addControls({
       position: "topleft",
       drawPolyline: false,
+      drawCircle: false,
       drawCircleMarker: false,
       drawMarker: false,
       cutPolygon: false,
       oneBlock: true
     });
 
-    map.on('pm:drawend', e => {  
-      console.log(e);  
-    });  
-
+    this.map.on("pm:drawend", () => {
+      this.getGeometry();
+    });
+  },
+  methods: {
+    getGeometry() {
+      const geoJson = this.map.pm.getGeomanDrawLayers(true).toGeoJSON();
+      this.spatialQueryOSM(geoJson);
+    },
+    addGeoJSONtoMap(error, layer) {
+      L.geoJson(layer).addTo(this.map);
+    },
+    spatialQueryOSM(geoJson) {
+      let latlon = "";
+      geoJson.features[0].geometry.coordinates[0].pop();
+      geoJson.features[0].geometry.coordinates[0].forEach(coordPair => {
+        latlon += " " + coordPair[1] + " " + coordPair[0];
+      });
+      // query, callback, options
+      query.osm(
+        `[out:json];
+        way[building](poly:"${latlon}");
+        (._;>;);
+        out;`,
+        this.addGeoJSONtoMap,
+        { flatProperties: true }
+      );
+    }
   }
 };
 </script>
