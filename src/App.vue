@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import Map from "./components/Map";
+import Map from "./components/organisms/Map";
 // import Interface from "./components/Interface"
 
 export default {
@@ -18,8 +18,10 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+@import "styles/_cssReset.scss";
 #app {
+  overflow: auto;
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
