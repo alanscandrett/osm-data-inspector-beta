@@ -17,13 +17,12 @@ export default {
   props: { cssClassName: { type: String, default: "example-custom-control" } },
   data() {
     return {
-      isOpen: true
+      isOpen: false
     };
   },
   methods: {
     toggleOpen() {
       this.isOpen = !this.isOpen;
-      console.log(this.isOpen);
     }
   }
 };

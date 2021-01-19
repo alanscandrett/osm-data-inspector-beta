@@ -2,7 +2,10 @@
   <div class="MapView">
     <LMap ref="LeafletMap" :zoom="zoom" :center="center">
       <LTileLayer :url="url"></LTileLayer>
-      <MapButton><StatisticsPanel /></MapButton>
+      <MapButton
+        ><StatisticsPanel
+          :buildingsQuantity="buildingStatistics.buildingsQuantity"
+      /></MapButton>
     </LMap>
   </div>
 </template>
@@ -36,6 +39,19 @@ export default {
   computed: {
     map() {
       return this.$refs.LeafletMap.mapObject;
+    },
+    buildingStatistics() {
+      let statistics = {
+        buildingsQuantity: undefined,
+        buildingsUniqueCount: undefined,
+        buildingsLandUse: undefined
+      };
+      if (this.buildingLayer) {
+        statistics.buildingsQuantity = Object.keys(
+          this.buildingLayer._layers
+        ).length;
+      }
+      return statistics;
     }
   },
   mounted() {
@@ -56,6 +72,8 @@ export default {
         drawCircleMarker: false,
         drawMarker: false,
         cutPolygon: false,
+        removalMode: false,
+        editMode: false,
         oneBlock: true
       });
     },
@@ -70,6 +88,7 @@ export default {
     },
     addGeoJSONtoMap(error, layer) {
       this.buildingLayer = L.geoJson(layer, { pmIgnore: true });
+      console.log(this.buildingLayer);
       this.buildingLayer.addTo(this.map);
     },
     spatialQueryOSM(geoJson) {
