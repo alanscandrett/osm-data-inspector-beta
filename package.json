@@ -11,6 +11,7 @@
     "@geoman-io/leaflet-geoman-free": "^2.9.0",
     "core-js": "^3.8.2",
     "leaflet": "^1.7.1",
+    "leaflet-draw": "^1.0.4",
     "query-overpass": "^1.5.5",
     "vue": "^2.6.12",
     "vue2-leaflet": "^2.6.0"

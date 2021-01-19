@@ -6,13 +6,11 @@
     <div>
       <table>
         <tr>
-          <th>Building Quantity</th>
-          <th>Unique Building Count</th>
-          <th>Land Use</th>
+          <th>Building Count</th>
+          <th>Building Area %</th>
         </tr>
         <tr>
-          <td>{{ buildingsQuantity }}</td>
-          <td>{{ buildingsUniqueCount }}</td>
+          <td>{{ buildingsCount }}</td>
           <td>{{ buildingsLandUse }}</td>
         </tr>
       </table>
@@ -25,8 +23,7 @@ export default {
   name: "StatisticsPanel",
   components: {},
   props: {
-    buildingsQuantity: { type: Number, default: 0 },
-    buildingsUniqueCount: { type: Number, default: 0 },
+    buildingsCount: { type: Number, default: 0 },
     buildingsLandUse: { type: Number, default: 0 }
   }
 };
