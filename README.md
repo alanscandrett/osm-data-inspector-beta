@@ -7,14 +7,15 @@ This is a basic spatial viewer for Open Street Map (OSM) data.
 * Interactive map
 * Spatial Data
   * OSM Overpass data streaming
-  * [TODO] Vector data
+  * [TODO] Additional Vector data
 * Draw tools
   * Query via drawn shape
-* Charting of queried data
+* [TODO] Charting of queried data
 
 ## Software Stack
 
 * [Leaflet.js](https://leafletjs.com/)
-  * [Leaflet-Geoman](https://github.com/geoman-io/leaflet-geoman)
+  * [Leaflet-Draw](https://github.com/geoman-io/leaflet-geoman)
+* [Turf.js](https://turfjs.org/)
 * [Vue.js](https://github.com/vue-leaflet/Vue2Leaflet)
-* [Vue-ApexCharts](https://github.com/apexcharts/vue-apexcharts)
+* [Chart.js](https://github.com/apexcharts/vue-apexcharts)
