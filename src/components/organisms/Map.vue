@@ -30,7 +30,7 @@ export default {
     LTileLayer,
     LFeatureGroup,
     MapButton,
-    StatisticsPanel,
+    StatisticsPanel
   },
   data() {
     return {
@@ -41,7 +41,7 @@ export default {
       buildingLayers: [],
       queryPolygonLayers: [],
       buildingFootprintArea: undefined,
-      queryPolygonArea: undefined,
+      queryPolygonArea: undefined
     };
   },
   computed: {
@@ -54,7 +54,7 @@ export default {
     buildingStatistics() {
       let statistics = {
         buildingsCount: undefined,
-        buildingsLandUse: undefined,
+        buildingsLandUse: undefined
       };
       if (this.buildingFootprintArea && this.queryPolygonArea) {
         // Total amount of structures
@@ -65,14 +65,13 @@ export default {
         statistics.buildingsLandUse =
           (this.buildingFootprintArea / this.queryPolygonArea) * 100;
       }
-      //console.log(this.buildingFootprintArea, this.queryPolygonArea);
       return statistics;
-    },
+    }
   },
   mounted() {
     // Event listeners
     // Inject OSM geometry into map on draw complete.
-    this.map.on("draw:created", (e) => {
+    this.map.on("draw:created", e => {
       // Standard layer accessors do not work, so we manage them internally.
       // Thus we keep track of sketch layers ourselves, and remove them as needed.
       const oldLayer = this.queryPolygonLayers.pop();
@@ -86,6 +85,12 @@ export default {
     });
   },
   methods: {
+    clipGeometry(coordinatesArray){
+      let clippedGeometry = turf.polygon(coordinatesArray);
+      const poly = turf.polygon(this.queryPolygonLayers[0].getLatLngs())
+      clippedGeometry = turf.bboxClip(clippedGeometry, poly)
+      return clippedGeometry;
+    },
     getArea(geoJson) {
       const polygon = turf.polygon(geoJson); // m2 default units
       return turf.area(polygon);
@@ -97,13 +102,13 @@ export default {
           polyline: false,
           circle: false,
           circlemarker: false,
-          marker: false,
+          marker: false
         },
         edit: {
           featureGroup: this.$refs.SketchLayer.mapObject,
           edit: false,
-          remove: false,
-        },
+          remove: false
+        }
       });
       this.map.addControl(drawControl);
     },
@@ -112,16 +117,22 @@ export default {
       this.queryPolygonArea = this.getArea(geoJson.geometry.coordinates);
       this.spatialQueryOSM(geoJson.geometry.coordinates);
     },
-    addGeoJSONtoMap(error, layer) {
+    addGeoJSONtoMap(error, featureCollection) {
+      // Remove the last set of results
       if (this.buildingLayers.length) this.buildingLayers.pop().remove();
-      const buildingLayer = L.geoJson(layer, { pmIgnore: true });
+      // Convert and clip
+      featureCollection.features = featureCollection.features.map(feature => {
+        return this.clipGeometry(feature.geometry.coordinates);
+      })
+      console.log(this.queryPolygonLayers[0])
+      const buildingLayer = L.geoJson(featureCollection);
       this.buildingLayers.push(buildingLayer);
       buildingLayer.addTo(this.map);
       this.calculateBuildingFootprintArea();
     },
     spatialQueryOSM(geometryCoordinates) {
       let latlon = "";
-      geometryCoordinates[0].forEach((coordinatePair) => {
+      geometryCoordinates[0].forEach(coordinatePair => {
         latlon += " " + coordinatePair[1] + " " + coordinatePair[0];
       });
       // query, callback, options
@@ -137,13 +148,15 @@ export default {
     async calculateBuildingFootprintArea() {
       var totalArea = 0;
       const layerList = this.buildingLayers[0].getLayers();
-      layerList.forEach((layer) => {
-        let area = this.getArea(layer.feature.geometry.coordinates);
-        totalArea += area;
+      layerList.forEach(layer => {
+        if (layer.feature.geometry.type === "Polygon") {
+          let area = this.getArea(layer.feature.geometry.coordinates);
+          totalArea += area;
+        }
       });
       this.buildingFootprintArea = parseFloat(totalArea.toFixed(2));
-    },
-  },
+    }
+  }
 };
 </script>
 
