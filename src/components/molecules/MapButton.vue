@@ -1,8 +1,9 @@
 <template>
   <l-control :class="cssClassName">
     <div @click="toggleOpen">
+      <!-- @slot Use this slot for populating the button's expanded window -->
       <slot v-if="isOpen" />
-      <div class="iconChart" v-else>&#128480;</div>
+      <div class="icon" v-else>{{ unicodeSymbol }}</div>
     </div>
   </l-control>
 </template>
@@ -14,7 +15,10 @@ export default {
   components: {
     LControl
   },
-  props: { cssClassName: { type: String, default: "example-custom-control" } },
+  props: {
+    cssClassName: { type: String, default: "example-custom-control" },
+    unicodeSymbol: { type: String, default: "\u2639" }
+  },
   data() {
     return {
       isOpen: false
@@ -29,7 +33,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.iconChart {
+.icon {
   font-size: 4em;
   padding-right: 0.3em;
   height: 0.7em;

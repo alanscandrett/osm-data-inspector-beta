@@ -30,7 +30,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/* Backup CSS for development purposes */
 .PanelParent {
   padding: 0.5em;
   border: 1px solid grey;
