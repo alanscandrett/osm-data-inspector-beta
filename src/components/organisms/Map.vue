@@ -22,6 +22,7 @@ import L from "leaflet";
 import "leaflet-draw";
 import "leaflet-draw/dist/leaflet.draw.css";
 import * as turf from "@turf/turf";
+import  * as clip from  'turf-clip'
 
 export default {
   name: "Map",
@@ -122,9 +123,13 @@ export default {
       if (this.buildingLayers.length) this.buildingLayers.pop().remove();
       // Convert and clip
       featureCollection.features = featureCollection.features.map(feature => {
-        return this.clipGeometry(feature.geometry.coordinates);
+        if(feature.geometry.type === "Polygon"){
+          return clip(feature, this.queryPolygonLayers[0].toGeoJSON())
+        }
       })
-      console.log(this.queryPolygonLayers[0])
+
+      featureCollection.features = featureCollection.features.filter(feature=>feature != undefined)
+      console.log(featureCollection)
       const buildingLayer = L.geoJson(featureCollection);
       this.buildingLayers.push(buildingLayer);
       buildingLayer.addTo(this.map);
