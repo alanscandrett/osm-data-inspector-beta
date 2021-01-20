@@ -1,4 +1,4 @@
-# ICEYE OSM Visualiser
+# OSM Visualiser
 
 This is a basic spatial viewer for Open Street Map (OSM) data.
 
