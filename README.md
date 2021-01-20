@@ -2,6 +2,8 @@
 
 This is a basic spatial viewer for Open Street Map (OSM) data.
 
+[Click here to view the live application](https://alanscandrett.github.io/osm-data-inspector-beta/)
+
 ## Features
 
 * Interactive map
