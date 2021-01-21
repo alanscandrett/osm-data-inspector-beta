@@ -130,7 +130,10 @@ export default {
       featureCollection.features = featureCollection.features.map(feature => {
         // Despite defining 'way' as the return type other geometry types seems to be returned too.
         if (feature.geometry.type === "Polygon") {
-          let newFeatureCollection = clip(feature, this.queryPolygonLayers[0].toGeoJSON()); // Feature is turned into FeatureCollection by turf clip.
+          let newFeatureCollection = clip(
+            feature,
+            this.queryPolygonLayers[0].toGeoJSON()
+          ); // Feature is turned into FeatureCollection by turf clip.
           // Properties stripped too, we add them back here.
           newFeatureCollection.features[0].properties = feature.properties;
           newFeatureCollection.features[0].id = feature.id;
