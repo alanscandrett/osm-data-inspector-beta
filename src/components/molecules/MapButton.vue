@@ -1,5 +1,5 @@
 <template>
-  <l-control :class="cssClassName">
+  <l-control  position="topleft" :class="cssClassName">
     <div @click="toggleOpen">
       <!-- @slot Use this slot for populating the button's expanded window -->
       <slot v-if="isOpen" />
@@ -34,11 +34,7 @@ export default {
 
 <style lang="scss" scoped>
 .icon {
-  font-size: 4em;
-  padding-right: 0.3em;
-  height: 0.7em;
-  width: 0.7em;
-  line-height: 0.6em;
+  font-size: 1.8em;
 }
 
 /* Backup CSS for development purposes */

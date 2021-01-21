@@ -39,7 +39,7 @@ export default {
   },
   data() {
     return {
-      chartIcon: "\uD83D\uDDE0",
+      chartIcon: "\uD83D\uDCCA",
       url: "https://cdn.lima-labs.com/{z}/{x}/{y}.png?free", // Includes romanization of local language labels
       zoom: 15,
       center: [35.67319515681665, 139.74308967590332], // Tokyo
