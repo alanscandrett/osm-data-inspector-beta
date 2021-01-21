@@ -144,7 +144,59 @@ export default {
       featureCollection.features = featureCollection.features.filter(
         feature => feature != undefined
       );
-      const buildingLayer = L.geoJson(featureCollection);
+      const buildingLayer = L.geoJson(featureCollection, {
+        onEachFeature: function(feature, layer) {
+          const noDataMessage = "N/A";
+          const id = feature.properties.id
+            ? feature.properties.id
+            : noDataMessage;
+          const name = feature.properties.name
+            ? feature.properties.name
+            : noDataMessage;
+          const nameEnglish = feature.properties["name:en"]
+            ? feature.properties["name:en"]
+            : noDataMessage;
+          const operator = feature.properties["operator:en"]
+            ? feature.properties["operator:en"]
+            : noDataMessage;
+          const height = feature.properties.height
+            ? feature.properties.height
+            : noDataMessage;
+          const dataSource = feature.properties.source
+            ? feature.properties.source
+            : noDataMessage;
+          const amenity = feature.properties.amenity
+            ? feature.properties.amenity
+            : noDataMessage;
+
+          layer.bindPopup(
+            `
+          <h1> Building Details </h1>
+          <table>
+            <tr>
+              <th>ID</td>
+              <th>Name</td>
+              <th>Name (EN)</td>
+              <th>Operator</td>
+              <th>Height</td>
+              <th>Source</td>
+              <th>Amenity</td>
+            </tr>
+            <tr>
+              <td>${id}</td>
+              <td>${name}</td>
+              <td>${nameEnglish}</td>
+              <td>${operator}</td>
+              <td>${height}</td>
+              <td>${dataSource}</td>
+              <td>${amenity}</td>
+            </tr>
+          </table>
+          `,
+            { maxWidth: "auto", className: "popupClass" }
+          );
+        }
+      });
       this.buildingLayers.push(buildingLayer);
       buildingLayer.addTo(this.map);
       this.calculateBuildingFootprintArea();
@@ -179,8 +231,32 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .MapView {
   height: 100vh;
+}
+
+.popupClass {
+  h1 {
+    text-align: center;
+    font-size: large;
+  }
+  tr {
+    text-align: center;
+  }
+  th {
+    padding-right: 0.3em;
+    font-weight: bold;
+    text-align: center;
+    border-bottom: solid 1px;
+  }
+
+  td {
+    border-right: solid 1px black;
+    padding: 0.4em;
+  }
+  td:last-child {
+    border-right: unset;
+  }
 }
 </style>

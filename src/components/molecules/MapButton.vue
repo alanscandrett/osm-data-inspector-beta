@@ -35,6 +35,7 @@ export default {
 <style lang="scss" scoped>
 .icon {
   font-size: 1.8em;
+  padding: 0 0.05em;
 }
 
 /* Backup CSS for development purposes */
