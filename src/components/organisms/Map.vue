@@ -7,6 +7,7 @@
         <StatisticsPanel
           :buildingsCount="buildingStatistics.buildingsCount"
           :buildingsLandUse="buildingStatistics.buildingsLandUse"
+          :chartData="buildingStatistics.chartData"
       /></MapButton>
     </LMap>
   </div>
@@ -59,7 +60,11 @@ export default {
     buildingStatistics() {
       let statistics = {
         buildingsCount: undefined,
-        buildingsLandUse: undefined
+        buildingsLandUse: undefined,
+        chartData: {
+          data: [],
+          labels: []
+        }
       };
       if (this.buildingFootprintArea && this.queryPolygonArea) {
         // Amount of unique buildings
@@ -69,7 +74,22 @@ export default {
         // % of space used by buildings in the query region.
         statistics.buildingsLandUse =
           (this.buildingFootprintArea / this.queryPolygonArea) * 100;
+        // Chart specific statistics (data source count)
+        this.buildingLayers[0].getLayers().forEach(layer => {
+          let source = layer.feature.properties["source"];
+          if (!source) source = "N/A";
+          if (!statistics.chartData.labels.includes(source)) {
+            statistics.chartData.labels.push(source);
+            statistics.chartData.data[
+              statistics.chartData.labels.indexOf(source)
+            ] = 1;
+          } else
+            statistics.chartData.data[
+              statistics.chartData.labels.indexOf(source)
+            ] += 1;
+        });
       }
+      console.log(statistics.chartData);
       return statistics;
     }
   },
