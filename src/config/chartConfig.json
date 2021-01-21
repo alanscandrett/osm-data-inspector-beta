@@ -1,10 +1,10 @@
 {
   "type": "bar",
   "data": {
-    "labels": ["Building Count"],
+    "labels": [],
     "datasets": [
       {
-        "label": "",
+        "label": "Data Source",
         "data": [],
         "backgroundColor": [
             "rgba(255, 99, 132, 0.2)",
