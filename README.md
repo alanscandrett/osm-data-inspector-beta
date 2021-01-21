@@ -13,10 +13,9 @@ Note: _The Overpass API isn't lightning fast, so it may take a short time for th
 * Interactive map
 * Spatial Data
   * OSM Overpass data streaming
-  * [TODO] Additional Vector data
 * Draw tools
   * Query via drawn shape
-* [TODO] Charting of queried data
+* Charting of queried data
 
 ## Software Stack
 
