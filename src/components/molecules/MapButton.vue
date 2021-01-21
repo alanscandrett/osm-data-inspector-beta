@@ -1,5 +1,5 @@
 <template>
-  <l-control  position="topleft" :class="cssClassName">
+  <l-control position="topleft" :class="cssClassName">
     <div @click="toggleOpen">
       <!-- @slot Use this slot for populating the button's expanded window -->
       <slot v-if="isOpen" />
