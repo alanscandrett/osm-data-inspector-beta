@@ -4,11 +4,9 @@
       <LTileLayer :url="url"></LTileLayer>
       <LFeatureGroup ref="SketchLayer" @ready="addControls()" />
       <MapButton :unicodeSymbol="chartIcon">
-        <StatisticsPanel
-          :buildingsCount="buildingStatistics.buildingsCount"
-          :buildingsLandUse="buildingStatistics.buildingsLandUse"
-          :chartData="buildingStatistics.chartData"
-      /></MapButton>
+        <StatisticsPanel :buildingsCount="buildingStatistics.buildingsCount"
+          :buildingsLandUse="buildingStatistics.buildingsLandUse" :chartData="buildingStatistics.chartData" />
+      </MapButton>
     </LMap>
   </div>
 </template>
@@ -41,7 +39,7 @@ export default {
   data() {
     return {
       chartIcon: "\uD83D\uDCCA",
-      url: "https://cdn.lima-labs.com/{z}/{x}/{y}.png?free", // Includes romanization of local language labels
+      url: "https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png", // Includes romanization of local language labels
       zoom: 15,
       center: [35.67319515681665, 139.74308967590332], // Tokyo
       buildingLayers: [],
@@ -97,6 +95,7 @@ export default {
     // Event listeners
     // Inject OSM geometry into map on draw complete.
     this.map.on("draw:created", e => {
+      document.body.classList.toggle('wait');
       // Standard layer accessors do not work, so we manage them internally.
       // Thus we keep track of sketch layers ourselves, and remove them as needed.
       const oldLayer = this.queryPolygonLayers.pop();
@@ -165,7 +164,7 @@ export default {
         feature => feature != undefined
       );
       const buildingLayer = L.geoJson(featureCollection, {
-        onEachFeature: function(feature, layer) {
+        onEachFeature: function (feature, layer) {
           const noDataMessage = "N/A";
           const id = feature.properties.id
             ? feature.properties.id
@@ -220,6 +219,7 @@ export default {
       this.buildingLayers.push(buildingLayer);
       buildingLayer.addTo(this.map);
       this.calculateBuildingFootprintArea();
+      document.body.classList.toggle('wait');
     },
     /**
      * Queries the OSM Overpass API.
@@ -256,14 +256,20 @@ export default {
   height: 100vh;
 }
 
+body.wait, body.wait *{
+    cursor: wait !important;   
+}
+
 .popupClass {
   h1 {
     text-align: center;
     font-size: large;
   }
+
   tr {
     text-align: center;
   }
+
   th {
     padding-right: 0.3em;
     font-weight: bold;
@@ -275,6 +281,7 @@ export default {
     border-right: solid 1px black;
     padding: 0.4em;
   }
+
   td:last-child {
     border-right: unset;
   }
